@@ -46,7 +46,7 @@ def main():
                     print("Invalid choice. Please try again.")
 
     except NginxManagerError as e:
-        print(f"Lỗi: {str(e)}")
+        print(f"Error: {str(e)}")
         return 1
 
 
