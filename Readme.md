@@ -15,5 +15,6 @@ git clone https://github.com/Tafi00/nginx-cli.git /opt/nginx-cli && chmod +x /op
 Để cập nhật lên phiên bản mới nhất, bạn chỉ cần chạy lại lệnh cài đặt sau đây:
 
 ```bash
-span
+# Điều hướng đến thư mục project và pull phiên bản mới nhất
+cd /opt/nginx-cli && git pull
 ```
