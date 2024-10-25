@@ -99,6 +99,42 @@ class NginxManager:
 
         print("Đã cài đặt Nginx thành công!")
 
+    def add_subfolder(self, domain: str, subfolder: str, html_path: str) -> None:
+        """Add subfolder configuration"""
+        config_path = os.path.join(NGINX_SITES_AVAILABLE, domain)
+
+        try:
+            with open(config_path, 'r') as f:
+                config = f.read()
+
+            subfolder_config = SUBFOLDER_CONFIG.format(
+                subfolder=subfolder,
+                html_path=html_path
+            )
+
+            updated_config = config.replace(
+                "server {", f"server {{\n{subfolder_config}")
+
+            with open(config_path, 'w') as f:
+                f.write(updated_config)
+
+            if not test_nginx_config():
+                raise ConfigurationError("Cấu hình nginx không hợp lệ")
+
+            run_command(['sudo', 'systemctl', 'reload', 'nginx'])
+
+        except OSError as e:
+            raise PermissionError(f"Không thể ghi cấu hình: {str(e)}")
+
+    def view_domain_config(self, domain: str) -> str:
+        """View domain configuration"""
+        config_path = os.path.join(NGINX_SITES_AVAILABLE, domain)
+        try:
+            with open(config_path, 'r') as f:
+                return f.read()
+        except OSError as e:
+            raise NginxManagerError(f"Không thể đọc cấu hình: {str(e)}")
+
     def list_domains(self):
         domains = self.get_domains()
         if not domains:
