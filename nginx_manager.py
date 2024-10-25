@@ -7,13 +7,13 @@ from utils import run_command, test_nginx_config, select_domain
 
 class NginxManager:
     def __init__(self):
-        pass  # Bỏ kiểm tra nginx trong __init__
+        pass  # Skip nginx check in __init__
 
     def get_version(self) -> str:
         """Get nginx version"""
         returncode, output = run_command(['nginx', '-v'])
         if returncode != 0:
-            raise NginxManagerError("Không thể lấy phiên bản nginx")
+            raise NginxManagerError("Unable to get nginx version")
         return output.strip()
 
     def get_domains(self) -> List[str]:
@@ -87,17 +87,17 @@ class NginxManager:
 
     def install_nginx(self) -> None:
         """Install nginx"""
-        print("Đang cài đặt Nginx...")
+        print("Installing Nginx...")
         returncode, _ = run_command(['sudo', 'apt-get', 'update'])
         if returncode != 0:
-            raise NginxManagerError("Không thể cập nhật danh sách gói")
+            raise NginxManagerError("Unable to update package list")
 
         returncode, _ = run_command(
             ['sudo', 'apt-get', 'install', '-y', 'nginx'])
         if returncode != 0:
-            raise NginxManagerError("Không thể cài đặt nginx")
+            raise NginxManagerError("Unable to install nginx")
 
-        print("Đã cài đặt Nginx thành công!")
+        print("Nginx installed successfully!")
 
     def add_subfolder(self, domain: str, subfolder: str, html_path: str) -> None:
         """Add subfolder configuration"""
@@ -208,9 +208,14 @@ class NginxManager:
         print(config)
 
     def add_subfolder_reverse_proxy_interactive(self):
-        domain = input("Nhập tên miền chính: ")
-        subfolder = input("Nhập tên subfolder: ")
-        target_url = input("Nhập URL đích cho reverse proxy: ")
+        domains = self.get_domains()
+        if not domains:
+            print("No domains configured. Please add a domain first.")
+            return
+
+        domain = select_domain(domains, "add reverse proxy subfolder")
+        subfolder = input("Enter subfolder name: ")
+        target_url = input("Enter target URL for reverse proxy: ")
 
         config_content = f"""
 location /{subfolder} {{
@@ -223,12 +228,17 @@ location /{subfolder} {{
         """
 
         self._add_subfolder_config(domain, config_content)
-        print(f"Đã thêm subfolder {subfolder} với reverse proxy thành công.")
+        print(f"Successfully added subfolder {subfolder} with reverse proxy.")
 
     def add_subfolder_static_html_interactive(self):
-        domain = input("Nhập tên miền chính: ")
-        subfolder = input("Nhập tên subfolder: ")
-        html_path = input("Nhập đường dẫn đến file HTML tĩnh: ")
+        domains = self.get_domains()
+        if not domains:
+            print("No domains configured. Please add a domain first.")
+            return
+
+        domain = select_domain(domains, "add static HTML subfolder")
+        subfolder = input("Enter subfolder name: ")
+        html_path = input("Enter path to static HTML file: ")
 
         config_content = f"""
 location /{subfolder} {{
@@ -238,13 +248,13 @@ location /{subfolder} {{
         """
 
         self._add_subfolder_config(domain, config_content)
-        print(f"Đã thêm subfolder {subfolder} với file HTML tĩnh thành công.")
+        print(f"Successfully added subfolder {subfolder} with static HTML.")
 
     def _add_subfolder_config(self, domain, config_content):
         config_file = os.path.join(NGINX_SITES_AVAILABLE, domain)
         if not os.path.exists(config_file):
             raise NginxManagerError(
-                f"Không tìm thấy cấu hình cho domain {domain}")
+                f"Configuration not found for domain {domain}")
 
         with open(config_file, 'r') as f:
             content = f.read()
