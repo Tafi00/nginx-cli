@@ -66,7 +66,28 @@ def main():
                     print("Renewed SSL certificates")
 
                 elif choice == "6":
-                    domain = input("Enter domain name: ")
+                    domains = manager.get_domains()
+                    if not domains:
+                        print("No domains configured. Please add a domain first.")
+                        continue
+
+                    print("Available domains:")
+                    for idx, domain in enumerate(domains, 1):
+                        print(f"{idx}. {domain}")
+
+                    while True:
+                        try:
+                            domain_choice = int(
+                                input("Enter the number of the domain to add a subfolder: "))
+                            if 1 <= domain_choice <= len(domains):
+                                domain = domains[domain_choice - 1]
+                                break
+                            else:
+                                print(
+                                    "Invalid choice. Please enter a valid number.")
+                        except ValueError:
+                            print("Invalid input. Please enter a number.")
+
                     subfolder = input("Enter subfolder name: ")
                     html_path = input("Enter path to HTML directory: ")
                     manager.add_subfolder(domain, subfolder, html_path)
