@@ -206,3 +206,57 @@ class NginxManager:
         config = self.view_domain_config(domain)
         print(f"Configuration for domain {domain}:")
         print(config)
+
+    def add_subfolder_reverse_proxy_interactive(self):
+        domain = input("Nhập tên miền chính: ")
+        subfolder = input("Nhập tên subfolder: ")
+        target_url = input("Nhập URL đích cho reverse proxy: ")
+
+        config_content = f"""
+location /{subfolder} {{
+    proxy_pass {target_url};
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}}
+        """
+
+        self._add_subfolder_config(domain, config_content)
+        print(f"Đã thêm subfolder {subfolder} với reverse proxy thành công.")
+
+    def add_subfolder_static_html_interactive(self):
+        domain = input("Nhập tên miền chính: ")
+        subfolder = input("Nhập tên subfolder: ")
+        html_path = input("Nhập đường dẫn đến file HTML tĩnh: ")
+
+        config_content = f"""
+location /{subfolder} {{
+    alias {html_path};
+    index index.html;
+}}
+        """
+
+        self._add_subfolder_config(domain, config_content)
+        print(f"Đã thêm subfolder {subfolder} với file HTML tĩnh thành công.")
+
+    def _add_subfolder_config(self, domain, config_content):
+        config_file = os.path.join(NGINX_SITES_AVAILABLE, domain)
+        if not os.path.exists(config_file):
+            raise NginxManagerError(
+                f"Không tìm thấy cấu hình cho domain {domain}")
+
+        with open(config_file, 'r') as f:
+            content = f.read()
+
+        # Thêm cấu hình subfolder vào trước dấu '}'
+        new_content = content.rsplit('}', 1)
+        new_content = new_content[0] + config_content + '}\n'
+
+        with open(config_file, 'w') as f:
+            f.write(new_content)
+
+        self._reload_nginx()
+
+    def _reload_nginx(self):
+        run_command(['sudo', 'systemctl', 'reload', 'nginx'])

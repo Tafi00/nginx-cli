@@ -24,24 +24,22 @@ def test_nginx_config() -> bool:
 
 
 def display_menu(nginx_installed):
-    print("\n=== Nginx Management CLI ===")
     if not nginx_installed:
-        print("Nginx is not installed!")
-        print("1. Install Nginx")
-        print("2. Exit")
+        print("1. Cài đặt Nginx")
+        print("2. Thoát")
     else:
-        print("1. List domains")
-        print("2. Add domain")
-        print("3. Delete domain")
-        print("4. Install SSL")
-        print("5. Renew SSL")
-        print("6. Add subfolder")
-        print("7. View domain configuration")
-        print("8. Exit")
+        print("1. Liệt kê các domain")
+        print("2. Thêm domain mới")
+        print("3. Xóa domain")
+        print("4. Cài đặt SSL")
+        print("5. Gia hạn SSL")
+        print("6. Thêm subfolder")
+        print("7. Xem cấu hình domain")
+        print("8. Thoát")
 
 
 def get_user_choice():
-    return input("Enter your choice: ")
+    return input("Nhập lựa chọn của bạn: ")
 
 
 def select_domain(domains, action):

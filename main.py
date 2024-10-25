@@ -30,7 +30,14 @@ def main():
                 elif choice == "5":
                     manager.renew_ssl_interactive()
                 elif choice == "6":
-                    manager.add_subfolder_interactive()
+                    subfolder_choice = input(
+                        "Choose subfolder type (1: Reverse Proxy, 2: Static HTML file): ")
+                    if subfolder_choice == "1":
+                        manager.add_subfolder_reverse_proxy_interactive()
+                    elif subfolder_choice == "2":
+                        manager.add_subfolder_static_html_interactive()
+                    else:
+                        print("Invalid choice for subfolder.")
                 elif choice == "7":
                     manager.view_domain_config_interactive()
                 elif choice == "8":
@@ -39,7 +46,7 @@ def main():
                     print("Invalid choice. Please try again.")
 
     except NginxManagerError as e:
-        print(f"Error: {str(e)}")
+        print(f"Lỗi: {str(e)}")
         return 1
 
 
