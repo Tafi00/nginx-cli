@@ -8,14 +8,14 @@ def main():
         nginx_installed = manager.is_nginx_installed()
 
         while True:
-            print("\n=== Quản lý Nginx CLI ===")
+            print("\n=== Nginx Management CLI ===")
 
             if not nginx_installed:
-                print("Nginx chưa được cài đặt!")
-                print("1. Cài đặt Nginx")
-                print("2. Thoát")
+                print("Nginx is not installed!")
+                print("1. Install Nginx")
+                print("2. Exit")
 
-                choice = input("Nhập lựa chọn: ")
+                choice = input("Enter your choice: ")
 
                 if choice == "1":
                     manager.install_nginx()
@@ -24,67 +24,65 @@ def main():
                 elif choice == "2":
                     break
             else:
-                print(f"Phiên bản Nginx hiện tại: {manager.get_version()}\n")
-                print("1. Liệt kê domain")
-                print("2. Thêm domain")
-                print("3. Xóa domain")
-                print("4. Cài đặt SSL")
-                print("5. Gia hạn SSL")
-                print("6. Thêm thư mục con")
-                print("7. Xem cấu hình domain")
-                print("8. Thoát")
+                print(f"Current Nginx version: {manager.get_version()}\n")
+                print("1. List domains")
+                print("2. Add domain")
+                print("3. Delete domain")
+                print("4. Install SSL")
+                print("5. Renew SSL")
+                print("6. Add subfolder")
+                print("7. View domain configuration")
+                print("8. Exit")
 
-                choice = input("Nhập lựa chọn: ")
+                choice = input("Enter your choice: ")
 
                 if choice == "1":
                     domains = manager.get_domains()
                     if not domains:
-                        print("Không có domain nào được cấu hình")
+                        print("No domains configured")
                     else:
                         for idx, domain in enumerate(domains, 1):
                             print(f"{idx}. {domain}")
 
                 elif choice == "2":
-                    domain = input("Nhập tên domain: ")
-                    config_type = input("Loại cấu hình (static/proxy): ")
-                    path = input(
-                        "Nhập đường dẫn (thư mục HTML hoặc URL proxy): ")
+                    domain = input("Enter domain name: ")
+                    config_type = input("Configuration type (static/proxy): ")
+                    path = input("Enter path (HTML directory or proxy URL): ")
                     manager.add_domain(domain, config_type, path)
-                    print(f"Đã thêm domain {domain}")
+                    print(f"Added domain {domain}")
 
                 elif choice == "3":
-                    domain = input("Nhập tên domain cần xóa: ")
+                    domain = input("Enter domain name to delete: ")
                     manager.delete_domain(domain)
-                    print(f"Đã xóa domain {domain}")
+                    print(f"Deleted domain {domain}")
 
                 elif choice == "4":
-                    domain = input("Nhập tên domain cần cài đặt SSL: ")
+                    domain = input("Enter domain name to install SSL: ")
                     manager.install_ssl(domain)
-                    print(f"Đã cài đặt SSL cho domain {domain}")
+                    print(f"Installed SSL for domain {domain}")
 
                 elif choice == "5":
                     manager.renew_ssl()
-                    print("Đã gia hạn chứng chỉ SSL")
+                    print("Renewed SSL certificates")
 
                 elif choice == "6":
-                    domain = input("Nhập tên domain: ")
-                    subfolder = input("Nhập tên thư mục con: ")
-                    html_path = input("Nhập đường dẫn đến thư mục HTML: ")
+                    domain = input("Enter domain name: ")
+                    subfolder = input("Enter subfolder name: ")
+                    html_path = input("Enter path to HTML directory: ")
                     manager.add_subfolder(domain, subfolder, html_path)
-                    print(
-                        f"Đã thêm thư mục con {subfolder} cho domain {domain}")
+                    print(f"Added subfolder {subfolder} for domain {domain}")
 
                 elif choice == "7":
-                    domain = input("Nhập tên domain cần xem cấu hình: ")
+                    domain = input("Enter domain name to view configuration: ")
                     config = manager.view_domain_config(domain)
-                    print(f"Cấu hình cho domain {domain}:")
+                    print(f"Configuration for domain {domain}:")
                     print(config)
 
                 elif choice == "8":
                     break
 
     except NginxManagerError as e:
-        print(f"Lỗi: {str(e)}")
+        print(f"Error: {str(e)}")
         return 1
 
 
