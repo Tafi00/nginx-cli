@@ -20,7 +20,7 @@ cd /opt/nginx-cli && git pull
 ```
 
 ## Cách sử dung
-Chỉ đơn giản là dung lệnh ở bất kỳ đâu
+Chỉ đơn giản là dùng lệnh này ở bất kỳ đâu
 ```bash
 nnx
 ```
