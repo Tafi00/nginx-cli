@@ -27,3 +27,11 @@ server {{
     }}
 }}
 """
+
+SUBFOLDER_CONFIG = """
+    location /{subfolder} {{
+        alias {html_path};
+        index index.html index.htm;
+        try_files $uri $uri/ =404;
+    }}
+"""
