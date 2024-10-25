@@ -18,3 +18,9 @@ git clone https://github.com/Tafi00/nginx-cli.git /opt/nginx-cli && chmod +x /op
 # Điều hướng đến thư mục project và pull phiên bản mới nhất
 cd /opt/nginx-cli && git pull
 ```
+
+## Cách sử dung
+Chỉ đơn giản là dung lệnh ở bất kỳ đâu
+```bash
+nnx
+```
