@@ -4,17 +4,16 @@
 
 ## Cài Đặt
 
-Để cài đặt công cụ này, chỉ cần chạy lệnh dưới đây:
+Để cài đặt **Nginx CLI Tool**, chỉ cần chạy lệnh sau:
 
 ```bash
-curl -o /usr/local/bin/nnx https://raw.githubusercontent.com/Tafi00/nginx-cli/main/nnx.py && chmod +x /usr/local/bin/nnx && echo 'alias nnx="python3 /usr/local/bin/nnx"' >> ~/.bashrc && source ~/.bashrc
+git clone https://github.com/Tafi00/nginx-cli.git /opt/nginx-cli && chmod +x /opt/nginx-cli/main.py && echo 'alias nnx="python3 /opt/nginx-cli/main.py"' >> ~/.bashrc && source ~/.bashrc
 ```
-
 
 ## Cập Nhật
 
 Để cập nhật lên phiên bản mới nhất, bạn chỉ cần chạy lại lệnh cài đặt sau đây:
 
 ```bash
-curl -o /usr/local/bin/nnx https://raw.githubusercontent.com/Tafi00/nginx-cli/main/nnx.py && chmod +x /usr/local/bin/nnx
+span
 ```
