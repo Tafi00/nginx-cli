@@ -9,3 +9,12 @@
 ```bash
 curl -o /usr/local/bin/nnx https://raw.githubusercontent.com/Tafi00/nginx-cli/main/nnx.py && chmod +x /usr/local/bin/nnx && echo 'alias nnx="python3 /usr/local/bin/nnx"' >> ~/.bashrc && source ~/.bashrc
 ```
+
+
+## Cập Nhật
+
+Để cập nhật lên phiên bản mới nhất, bạn chỉ cần chạy lại lệnh cài đặt sau đây:
+
+```bash
+curl -o /usr/local/bin/nnx https://raw.githubusercontent.com/Tafi00/nginx-cli/main/nnx.py && chmod +x /usr/local/bin/nnx
+```
